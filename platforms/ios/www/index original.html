@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <link rel="stylesheet" type="text/css" href="css/login.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script>
+             function validateForm()
+             {
+                    alert("drhxf");
+             }
+        </script>
+
+     </head>
+    <body>
+        <div class="login-page">
+             <div class="form">
+                     <form class="form-login" role="form" action="http://api.brewmen.online/api/token" id="formLogin" enctype="application/x-www-form-urlencoded" method="post" onsubmit="return validateForm()">
+                         <input type="text" id="username" name="username" placeholder="username"/>
+                         <input type="password" id="password" name="password"  placeholder="password"/>
+                         <input type="hidden" id="grant_type" name="grant_type"  placeholder="grant_type" value="password"/>
+                         <button type="submit" class="btn btn-success btn-lg float-right">Login</button>
+                    </form>
+             </div>
+        </div> 
+     </body>
+</html>

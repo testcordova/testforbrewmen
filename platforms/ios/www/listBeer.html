@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Bootstrap 4 Card Styles</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ </head>
+  <body>
+  <br>
+  <div class="container">              
+     <button type="button" class="btn btn-info" onClick="clearForm()" id="btnGen">Clear</button>
+     <button type="button" class="btn btn-info" onClick="add()" id="btnGen">Add</button>
+     <br>
+     <br>
+     <!-- HTML-код модального окна -->
+     <div id="myModalBox" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.модальное окно-Содержание -->  
+        </div><!-- /.модальное окно-диалог -->  
+      </div><!-- /.модальное окно -->  
+       <!-- HTML-код модального окна загрузки-->
+     <div id="myModalBoxLoading" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-success">
+                    </div>
+                    <p>&nbsp;&nbsp;Идет загрузка списка пива</p>
+                   </div>
+                </div>
+            </div><!-- /.модальное окно-Содержание -->  
+        </div><!-- /.модальное окно-диалог -->  
+      </div><!-- /.модальное окно -->  
+     <div class="row" id="contentPanel">  
+     </div>
+</div>
+  <script>
+    addAllForm();
+    function add()
+    { 
+           var myCol = $('<div class="col-sm-3 col-md-10 pb-2"></div>');
+           myCard=$('<div class="card border-info"><div class="card-body"><div class="row"><div class="col"><b>Изображение</b></div><div class="col-7"><b>Наименование:</b><br>Лагер/Lager</div></div><div class="row"><div class="col"><img src="http://market.brewmen.online/Uploads/Beers/Beers-12.jpg" align="center"  width="100px" height="100px" class="rounded-circle" /></div><div class="col-7"><b>Описание:</b><br>Решительно охмеленный, умеренно крепкий американский пейл-эль. Цвет светло янтарный. Охмелен современными сортами хмелей Центениал, Аммарило, Симкое. В аромате тропические фрукты, послевкусие без жёсткой хмелевой терпкости</div></div><div class="row"><div class="col"><div class="text-center"><br><button type="button" class="btn btn-success" onclick="myFunc();">Редактировать</button></div></div></div></div></div>'); 
+            myCard.appendTo(myCol);
+           myCol.appendTo('#contentPanel');
+    }
+    function clearForm()
+    {
+     $("#contentPanel").empty();
+    }
+    function myFunc()
+    {
+     // alert("Здесь будет обработчик"); 
+      $("#myModalBox").modal('show');
+    }
+    function addAllForm()
+    {
+
+      var settings = 
+      {
+        "url": "http://api.brewmen.online/api/Beers",
+        "method": "GET",
+        "timeout": 0,
+        "headers": 
+         {
+            "Content-Type": "application/x-www-form-urlencoded"
+         },
+    beforeSend: function ()
+    {
+      //выравниваем по центру
+     $('#myModalBoxLoading').css("margin-top", $(window).height() / 2 - $('.modal-content').height() / 2);
+     //показываем окно
+     $("#myModalBoxLoading").modal('show');
+    },
+    complete: function ()
+    {
+    },
+    success: function ()
+    {
+      $("#myModalBoxLoading").modal("hide");
+    }
+
+  };
+  $.ajax(settings).done(function (response)
+  {
+        for(var i=0;i<response.length;i++)
+          {  //http://market.brewmen.online/Uploads/Beers/0.jpg
+            var image;
+            if(response[i].BeersPhoto.length==1)
+            {
+              image= response[i].BeersPhoto[0].Path;
+            }else
+            {
+              image="http://market.brewmen.online/Uploads/Beers/0.jpg";
+            }
+            var myCol = $('<div class="col-sm-3 col-md-10 pb-2"></div>');
+            var myCard=$('<div class="card border-info"><div class="card-body"><div class="row"><div class="col"><b>Изображение</b></div><div class="col-7"><b>Наименование:</b><br>'+response[i].Name+'</div></div><div class="row"><div class="col"><img src="'+image+'" align="center"  width="100px" height="100px" class="rounded-circle" /></div><div class="col-7"><b>Описание:</b><br>'+response[i].Discription+'</div></div><div class="row"><div class="col"><div class="text-center"><br><button type="button" class="btn btn-success" onclick="clearForm();">Редактировать</button></div></div></div></div></div>'); 
+           myCard.appendTo(myCol);
+           myCol.appendTo('#contentPanel');
+         }
+       $("#myModalBoxLoading").modal("hide");
+
+  });
+}
+  </script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Bootstrap 4 Card Styles</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ </head>
+  <body>
+  <br><br><br>
+  <div class="container">
+
+     <button type="button" class="btn btn-info" onClick="clearForm()" id="btnGen">Clear</button>
+     <button type="button" class="btn btn-info" onClick="addForm()" id="btnGen">Add</button>
+     <br>
+     <br>
+     <!-- HTML-код модального окна -->
+     <div id="myModalBox" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.модальное окно-Содержание -->  
+        </div><!-- /.модальное окно-диалог -->  
+      </div><!-- /.модальное окно -->  
+    <div class="pb-3">
+       <!-- HTML-код модального окна загрузки-->
+     <div id="myModalBoxLoading" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                  <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-success">
+                    </div>
+                    <p>&nbsp;&nbsp;Идет загрузка списка пива</p>
+                   </div>
+                </div>
+            </div><!-- /.модальное окно-Содержание -->  
+        </div><!-- /.модальное окно-диалог -->  
+      </div><!-- /.модальное окно -->  
+    </div>
+     <div class="row" id="contentPanel">  
+     </div>
+</div>
+  <script>
+    addAllForm();
+    function addForm()
+    { 
+            var myCol = $('<div class="col-sm-3 col-md-10 pb-2"></div>');
+            var myPanel = $('<div class="card border-info id="'+1+'Panel"><div class="card-block"><div class="card-title"><button type="button" class="close close-chat mr-1" data-target="#'+1+'Panel" data-dismiss="alert"><span class="float-right"><i class="fa fa-remove"></i></span></button><br><span>&nbsp;&nbsp;Card #'+1+'</span></div><p>&nbsp;&nbsp;Some text in '+1+' </p><div class="text-center"><button class="btn btn-success" onclick="myFunc();">Купить</button><br><br></div></div></div>');
+            myPanel.appendTo(myCol);
+            myCol.appendTo('#contentPanel');
+        $('.close').on('click', function(e)
+        {
+              e.stopPropagation();  
+              var $target = $(this).parents('.col-sm-3');
+              $target.hide('slow', function(){ $target.remove(); });
+        });
+    }
+    function clearForm()
+    {
+      $("#contentPanel").empty();
+    }
+    function myFunc()
+    {
+
+     // alert("Здесь будет обработчик"); 
+      $("#myModalBox").modal('show');
+    }
+    function addAllForm()
+    {
+
+      var settings = 
+      {
+        "url": "http://api.brewmen.online/api/Beers",
+        "method": "GET",
+        "timeout": 0,
+        "headers": 
+         {
+            "Content-Type": "application/x-www-form-urlencoded"
+         },
+    beforeSend: function ()
+    {
+      //выравниваем по центру
+     $('#myModalBoxLoading').css("margin-top", $(window).height() / 2 - $('.modal-content').height() / 2);
+     //показываем окно
+     $("#myModalBoxLoading").modal('show');
+    },
+    complete: function ()
+    {
+    },
+    success: function ()
+    {
+      $("#myModalBoxLoading").modal("hide");
+    }
+
+  };
+  $.ajax(settings).done(function (response)
+  {
+    for(var i=0;i<response.length;i++)
+          {
+             var myCol = $('<div class="col-sm-3 col-md-10 pb-2"></div>');
+             var myPanel = $('<div class="card style="width: 1rem;" border-info id="'+i+'Panel"><div class="card-block"><div class="card-title"><button type="button" class="close close-chat mr-1" data-target="#'+i+'Panel" data-dismiss="alert"><span class="float-right"><i class="fa fa-remove"></i></span></button><br><span>&nbsp;&nbsp;'+response[i].Name+'</span></div><p>&nbsp;&nbsp;'+response[i].Discription+' </p><div class="text-center"><button class="btn btn-success" onclick="myFunc();">Купить</button><br><br></div></div></div>');
+              myPanel.appendTo(myCol);
+              myCol.appendTo('#contentPanel');
+              $('.close').on('click', function(e)
+              {
+                e.stopPropagation();  
+                var $target = $(this).parents('.col-sm-3');
+                $target.hide('slow', function()
+                 { $target.remove();
+                 });
+               }); 
+          }
+  });
+}
+  </script>
+  </body>
+</html>

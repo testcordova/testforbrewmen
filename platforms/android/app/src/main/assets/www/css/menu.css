@@ -1,0 +1,3 @@
+.card[data-clickable=true]{
+  cursor: pointer;
+}
